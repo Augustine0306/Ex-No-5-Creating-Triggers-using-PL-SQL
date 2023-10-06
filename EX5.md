@@ -15,60 +15,34 @@
 ### Program:
 ### Create employee table
 ```
-CREATE TABLE employed(
-  empid NUMBER,
-  empname VARCHAR2(10),
-  dept VARCHAR2(10),
-  salary NUMBER
-);
-
-CREATE TABLE sal_log (
-  log_id NUMBER GENERATED ALWAYS AS IDENTITY,
-  empid NUMBER,
-  empname VARCHAR2(10),
-  old_salary NUMBER,
-  new_salary NUMBER,
-  update_date DATE
-);
--- Insert the values in the employee table
-insert into employed values(1,'Shakthi','IT',1000000);
-insert into employed values(2,'Suju','SALES',500000)
+create table employee2(empid number,empname varchar(10),dept varchar(10),salary number);
 ```
-### Create employee table
-![image](https://github.com/Augustine0306/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119404460/7893e68b-344a-4bfc-8375-59297c0e72e3)
 ### Create salary_log table
-![image](https://github.com/Augustine0306/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119404460/81324dd6-4ec0-403d-ac85-393c428143b1)
-
+```
+create table sal_log (log_id number generated always as identity,empid number,empname varchar(10),old_salary number,new_salary number,update_date date);
+```
 
 ### PLSQL Trigger code
 ```
--- Create the trigger
-CREATE OR REPLACE TRIGGER log_sal_update
-BEFORE UPDATE ON employed
-FOR EACH ROW
-BEGIN
-  IF :OLD.salary != :NEW.salary THEN
-    INSERT INTO sal_log (empid, empname, old_salary, new_salary, update_date)
-    VALUES (:OLD.empid, :OLD.empname, :OLD.salary, :NEW.salary, SYSDATE);
-  END IF;
-END;
-/
--- Insert the values in the employee table
-insert into employed values(1,'Shakthi','IT',1000000);
-insert into employed values(2,'Suju','SALES',500000);
-
--- Update the salary of an employee
-UPDATE employed
-SET salary = 60000
-WHERE empid = 1;
--- Display the employee table
-SELECT * FROM employed;
-
--- Display the salary_log table
-SELECT * FROM sal_log;
+create or replace trigger log1_salary_update
+before update on employee_2
+for each row
+declare
+v_old_salary number;
+v_new_salary number;
+begin
+v_old_salary := :old.salary;
+v_new_salary := :new.salary;
+if v_old_salary <> v_new_salary then
+insert into sal_log1 (empid,empname,old_salary,new_salary,update_date)
+values(:old.empid, :old.empname , v_old_salary ,v_new_salary , SYSDATE);
+end if;     
+end;
+ /
 ```
 ### Output:
-![image](https://github.com/Augustine0306/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119404460/1b8aa8fb-58c3-474e-9edb-0ce5b2d3fc71)
+![image](https://github.com/Augustine0306/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/119404460/4c94ac11-7f5c-497e-abe8-b9ec4f93578e)
+
 
 ### Result:
 Thus the program implemented successfully.
